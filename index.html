@@ -1,0 +1,122 @@
+<!<!DOCTYPE html> 
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto News Platform</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            margin: 0;
+            padding: 15px;
+            text-align: center;
+        }
+        .header {
+            padding: 20px;
+            background: linear-gradient(135deg, #1e1b4b, #311042);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        h1 { margin: 0; font-size: 22px; color: #38bdf8; }
+        p { color: #94a3b8; font-size: 14px; margin-top: 5px; }
+        .section-title {
+            text-align: right;
+            font-size: 16px;
+            color: #f1f5f9;
+            margin: 15px 5px 10px 5px;
+            font-weight: bold;
+        }
+        .card {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .card:hover { border-color: #38bdf8; background-color: #1e293b; }
+        .card-info { text-align: right; }
+        .card-title { font-size: 16px; font-weight: bold; color: #f1f5f9; }
+        .card-desc { font-size: 12px; color: #64748b; margin-top: 4px; }
+        .icon { font-size: 24px; margin-left: 12px; }
+        .badge-vip {
+            background-color: #eab308;
+            color: #000;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 20px;
+        }
+        .badge-free {
+            background-color: #10b981;
+            color: #fff;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>📊 منصة أسعار وأخبار الأسواق</h1>
+        <p>مرحباً بك في المصدر الموحد للتحليلات الفورية والبيانات العالمية</p>
+    </div>
+
+    <div class="section-title">📊 الأقسام المجانية العامة</div>
+    
+    <div class="card" onclick="alert('تنبيه: يمكنك استخدام الأمر /crypto داخل البوت للحصول على التقارير الفورية!')">
+        <div style="display: flex; align-items: center;">
+            <div class="icon">🪙</div>
+            <div class="card-info">
+                <div class="card-title">العملات الرقمية + TON</div>
+                <div class="card-desc">مراقبة أقوى 15 عملة مشفرة وعملة تليجرام اللحظية</div>
+            </div>
+        </div>
+        <span class="badge-free">مجاني</span>
+    </div>
+
+    <div class="card" onclick="alert('استخدم الأمر /metals في البوت للتقارير المباشرة')">
+        <div style="display: flex; align-items: center;">
+            <div class="icon">🟡</div>
+            <div class="card-info">
+                <div class="card-title">الذهب والمعادن والطاقة</div>
+                <div class="card-desc">تحديث فوري لأسعار الذهب والفضة والنفط العالمي</div>
+            </div>
+        </div>
+        <span class="badge-free">مجاني</span>
+    </div>
+
+    <div class="section-title">👑 أقسام التحليلات الحصرية (VIP)</div>
+
+    <div class="card" onclick="alert('هذا القسم يتطلب اشتراك VIP. أرسل /buy_vip لتفعيله فورا!')">
+        <div style="display: flex; align-items: center;">
+            <div class="icon">📱</div>
+            <div class="card-info">
+                <div class="card-title">تحليلات كبار خبراء منصة X</div>
+                <div class="card-desc">ملخصات وتوقعات حصرية (أسبوعية / شهرية / سنوية)</div>
+            </div>
+        </div>
+        <span class="badge-vip">VIP</span>
+    </div>
+
+    <div class="card" onclick="alert('قسم مخصص للمشتركين المميزين لتتبع الفرص المبكرة')">
+        <div style="display: flex; align-items: center;">
+            <div class="icon">🚀</div>
+            <div class="card-info">
+                <div class="card-title">المشاريع الناشئة والعملات الواعدة</div>
+                <div class="card-desc">دراسة وتحليل العملات الجديدة قبل إدراجها بالأسواق</div>
+            </div>
+        </div>
+        <span class="badge-vip">VIP</span>
+    </div>
+
+</body>
+</html>
