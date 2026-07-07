@@ -3,338 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Crypto Pro Live - مراقبة الأسواق والمؤشرات</title>
-    <!-- TradingView Widgets (Embedded) -->
+    <title>سوق العرب - متابعة الأسواق الحية</title>
+    <!-- Favicon -->
+    <link rel="icon" href="https://img.icons8.com/color/48/bitcoin--v1.png">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-        }
-        body {
-            background: #0b0e11;
-            color: #eaecef;
-            direction: rtl;
-            overflow-x: hidden;
-        }
-        :root {
-            --bg-main: #0b0e11;
-            --bg-card: #181a20;
-            --bg-input: #2b2f36;
-            --text-primary: #eaecef;
-            --text-secondary: #848e9c;
-            --primary-color: #f0b90b;
-            --up-color: #0ecb81;
-            --down-color: #f6465d;
-            --border-color: #24272c;
-        }
-        .ticker-tape {
-            background: #12161a;
-            border-bottom: 1px solid var(--border-color);
-            height: 40px;
-            overflow: hidden;
-        }
-        .header-wrapper {
-            padding: 12px 16px 8px 16px;
-            background: linear-gradient(180deg, #181a20 0%, #0b0e11 100%);
-            border-bottom: 1px solid var(--border-color);
-        }
-        .brand {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .brand-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .vip-badge-top {
-            background: var(--primary-color);
-            color: #000;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 2px 10px;
-            border-radius: 20px;
-        }
-        .navigation-tabs {
-            display: flex;
-            gap: 12px;
-            margin-top: 14px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 8px;
-        }
-        .tab-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 14px;
-            font-weight: 500;
-            padding: 6px 14px;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-        .tab-btn.active {
-            color: var(--primary-color);
-            background: rgba(240, 185, 11, 0.08);
-        }
-        .content-section {
-            padding: 12px 14px;
-            display: none;
-        }
-        .content-section.active {
-            display: block;
-        }
-        .market-screener-box {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-            height: 500px;
-        }
-        .chart-box {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
-            height: 480px;
-            margin-bottom: 12px;
-        }
-        .info-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 14px 16px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: 0.15s;
-            cursor: pointer;
-        }
-        .info-card:hover {
-            border-color: var(--primary-color);
-        }
-        .info-card-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .info-card-icon {
-            font-size: 24px;
-            background: rgba(255,255,255,0.04);
-            padding: 8px;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .info-card-title {
-            font-weight: 600;
-            font-size: 15px;
-        }
-        .info-card-desc {
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin-top: 2px;
-        }
-        .badge-vip {
-            background: #eab308;
-            color: #000;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 3px 10px;
-            border-radius: 20px;
-        }
-        .badge-free {
-            background: var(--up-color);
-            color: #fff;
-            font-size: 11px;
-            padding: 3px 10px;
-            border-radius: 20px;
-        }
-        .section-title {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin: 18px 0 10px 0;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-        .footer-note {
-            font-size: 11px;
-            color: var(--text-secondary);
-            text-align: center;
-            padding: 18px 0 10px 0;
-            border-top: 1px solid var(--border-color);
-            margin-top: 16px;
-        }
+        /* (نفس تنسيقاتك السابقة، تمت إضافة تنسيق جديد للودجت) */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, system-ui, sans-serif; }
+        body { background: #0b0e11; color: #eaecef; direction: rtl; overflow-x: hidden; }
+        :root { --bg-card: #181a20; --gold: #f0b90b; --up-color: #0ecb81; --border-color: #24272c; }
+        
+        .header-wrapper { padding: 12px 16px 8px 16px; background: linear-gradient(180deg, #1a1d24 0%, #0b0e11 100%); border-bottom: 1px solid var(--border-color); }
+        .brand { display: flex; justify-content: space-between; align-items: center; }
+        .brand-title { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 700; }
+        
+        .navigation-tabs { display: flex; gap: 8px; margin-top: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; flex-wrap: wrap; }
+        .tab-btn { background: transparent; border: none; color: #848e9c; font-size: 14px; padding: 6px 14px; cursor: pointer; border-radius: 6px; transition: 0.2s; }
+        .tab-btn.active { color: var(--gold); background: rgba(240, 185, 11, 0.08); }
+        
+        .content-section { padding: 12px 14px 20px; display: none; }
+        .content-section.active { display: block; }
+        .widget-container { width: 100%; height: 350px; border-radius: 12px; overflow: hidden; margin-top: 10px; }
+        
+        .footer-note { font-size: 12px; color: #848e9c; text-align: center; padding: 20px; border-top: 1px solid var(--border-color); margin-top: 20px; }
+        .footer-link { color: var(--gold); text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <!-- شريط التيكر العلوي -->
 <div class="ticker-tape">
-    <div class="tradingview-widget-container" style="width:100%;height:100%;">
-        <div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-        {
-          "symbols": [
-            { "proName": "BINANCE:BTCUSDT", "title": "BTC/USDT" },
-            { "proName": "BINANCE:ETHUSDT", "title": "ETH/USDT" },
-            { "proName": "BINANCE:SOLUSDT", "title": "SOL/USDT" },
-            { "proName": "BINANCE:TONUSDT", "title": "TON/USDT" }
-          ],
-          "showSymbolLogo": true,
-          "colorTheme": "dark",
-          "isTransparent": true,
-          "displayMode": "adaptive",
-          "locale": "ar"
-        }
-        </script>
-    </div>
+    <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+    { "symbols": [{"proName":"BINANCE:BTCUSDT"},{"proName":"BINANCE:ETHUSDT"},{"proName":"BINANCE:SOLUSDT"},{"proName":"BINANCE:TONUSDT"}], "colorTheme": "dark", "isTransparent": true, "locale": "ar" }
+    </script></div>
 </div>
 
 <!-- الهيدر -->
 <div class="header-wrapper">
-    <div class="brand">
-        <div class="brand-title">
-            <span>⚡</span> Crypto Pro Live
-        </div>
-        <div class="vip-badge-top">مراقبة حية</div>
-    </div>
+    <div class="brand"><div class="brand-title"><span>📊</span> سوق العرب</div></div>
     <div class="navigation-tabs">
-        <button class="tab-btn active" onclick="switchTab('markets', this)">📊 لوحة العملات</button>
-        <button class="tab-btn" onclick="switchTab('charts', this)">📈 الشارت الفني</button>
-        <button class="tab-btn" onclick="switchTab('services', this)">👑 الخدمات</button>
+        <button class="tab-btn active" onclick="switchTab('crypto', this)">🪙 عملات رقمية</button>
+        <button class="tab-btn" onclick="switchTab('commodities', this)">🛢️ ذهب & نفط</button>
+        <button class="tab-btn" onclick="switchTab('news', this)">📰 أخبار حية</button>
     </div>
 </div>
 
-<!-- قسم لوحة العملات (المؤشرات الحية وصعود/هبوط) -->
-<div id="markets" class="content-section active">
-    <div class="market-screener-box">
+<!-- قسم العملات -->
+<div id="crypto" class="content-section active">
+    <div class="widget-container" style="height: 450px;">
+        <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
+        { "width": "100%", "height": "100%", "screener_type": "crypto_mkt", "colorTheme": "dark", "locale": "ar", "isTransparent": true }
+        </script></div>
+    </div>
+</div>
+
+<!-- قسم الذهب والنفط -->
+<div id="commodities" class="content-section">
+    <div class="widget-container" style="height: 450px;">
+        <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
+        { "width": "100%", "height": "100%", "screener_type": "commodities", "colorTheme": "dark", "locale": "ar", "isTransparent": true }
+        </script></div>
+    </div>
+</div>
+
+<!-- قسم الأخبار الحي (تم التحديث هنا) -->
+<div id="news" class="content-section">
+    <div class="widget-container" style="height: 500px;">
         <div class="tradingview-widget-container" style="height:100%;width:100%;">
             <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
-            {
-              "width": "100%",
-              "height": "100%",
-              "defaultColumn": "overview",
-              "screener_type": "crypto_mkt",
-              "displayCurrency": "USD",
-              "colorTheme": "dark",
-              "locale": "ar",
-              "isTransparent": true
-            }
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
+            { "feedMode": "market", "market": "crypto", "colorTheme": "dark", "isTransparent": true, "displayMode": "regular", "width": "100%", "height": "100%", "locale": "ar" }
             </script>
         </div>
     </div>
 </div>
 
-<!-- قسم الشارت المتقدم -->
-<div id="charts" class="content-section">
-    <div class="chart-box">
-        <div class="tradingview-widget-container" style="height:100%;width:100%;">
-            <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-            {
-              "autosize": true,
-              "symbol": "BINANCE:BTCUSDT",
-              "interval": "60",
-              "timezone": "Etc/UTC",
-              "theme": "dark",
-              "style": "1",
-              "locale": "ar",
-              "enable_publishing": false,
-              "hide_side_toolbar": false,
-              "allow_symbol_change": true,
-              "calendar": false,
-              "support_host": "https://www.tradingview.com"
-            }
-            </script>
-        </div>
-    </div>
-</div>
-
-<!-- قسم الخدمات والتقارير -->
-<div id="services" class="content-section">
-    <div class="section-title">📊 تحليلات ومؤشرات مجانية</div>
-
-    <div class="info-card" onclick="alert('📈 استخدم /metals في البوت لأسعار الذهب والفضة والنفط')">
-        <div class="info-card-right">
-            <div class="info-card-icon">🟡</div>
-            <div>
-                <div class="info-card-title">الذهب والمعادن والطاقة</div>
-                <div class="info-card-desc">تحديث فوري لأسعار الذهب، الفضة، النفط</div>
-            </div>
-        </div>
-        <span class="badge-free">مجاني</span>
-    </div>
-
-    <div class="section-title">👑 تحليلات وإشارات VIP</div>
-
-    <div class="info-card" onclick="alert('🔐 هذا القسم خاص بالمشتركين VIP. أرسل /buy_vip للتفعيل')">
-        <div class="info-card-right">
-            <div class="info-card-icon">📱</div>
-            <div>
-                <div class="info-card-title">توصيات حيتان منصة X</div>
-                <div class="info-card-desc">أقوى الفرص من كبار المحللين</div>
-            </div>
-        </div>
-        <span class="badge-vip">VIP</span>
-    </div>
-
-    <div class="info-card" onclick="alert('🚀 المشاريع الواعدة قبل الإدراج متاحة للمشتركين VIP')">
-        <div class="info-card-right">
-            <div class="info-card-icon">🚀</div>
-            <div>
-                <div class="info-card-title">العملات الجديدة والمشاريع</div>
-                <div class="info-card-desc">تحليل الفرص المبكرة قبل الإدراج</div>
-            </div>
-        </div>
-        <span class="badge-vip">VIP</span>
-    </div>
-
-    <div class="footer-note">
-        ⚡ جميع المؤشرات والشارتات حية ومقدمة من TradingView
-    </div>
+<!-- تذييل -->
+<div class="footer-note">
+    ⚡ جميع البيانات مقدمة من TradingView <br>
+    تابعنا على التليجرام: <a href="https://t.me/CryptoNews15bot" class="footer-link">@CryptoNews15bot</a>
 </div>
 
 <script>
-    // التبديل بين التبويبات مع الحفاظ على الحالة
     function switchTab(tabId, btnElement) {
-        // إخفاء كل الأقسام
         document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-        // إظهار القسم المطلوب
         document.getElementById(tabId).classList.add('active');
-
-        // تحديث أزرار التبويب
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        if (btnElement) {
-            btnElement.classList.add('active');
-        } else {
-            // fallback: البحث عن الزر الذي يحمل نفس النص أو المعرف
-            const allBtns = document.querySelectorAll('.tab-btn');
-            allBtns.forEach(btn => {
-                const attr = btn.getAttribute('onclick');
-                if (attr && attr.includes(tabId)) {
-                    btn.classList.add('active');
-                }
-            });
-        }
+        btnElement.classList.add('active');
     }
-
-    // لإصلاح أي انقطاع في الـ widgets (إعادة تحميل خفيف)
-    window.addEventListener('load', function() {
-        // بعض البيئات قد تحتاج إلى إعادة تهيئة الـ iframe بعد التحميل
-        console.log('✅ Crypto Pro Live ready');
-    });
 </script>
 
 </body>
