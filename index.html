@@ -2,535 +2,505 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Souq Al-Yunani - منصة التداول المتقدمة</title>
-    <!-- TradingView Widget -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>سوق العرب - متابعة الأسواق الحية</title>
+    <!-- TradingView widgets -->
     <style>
-        /* ========================================
-               ROOT VARIABLES & RESET
-            ======================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        body {
+            background: #0b0e11;
+            color: #eaecef;
+            direction: rtl;
+            overflow-x: hidden;
         }
         :root {
-            --bg-primary: #0b0e11;
-            --bg-secondary: #181a20;
-            --bg-card: #1e2329;
-            --bg-nav: #12161a;
+            --bg-main: #0b0e11;
+            --bg-card: #181a20;
             --text-primary: #eaecef;
             --text-secondary: #848e9c;
-            --text-muted: #5e6673;
             --gold: #f0b90b;
-            --green: #0ecb81;
-            --red: #f6465d;
-            --border-color: #2b3139;
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-            --nav-height: 72px;
-            --header-height: 56px;
-            --radius: 16px;
-            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --up-color: #0ecb81;
+            --down-color: #f6465d;
+            --border-color: #24272c;
         }
-
-        body {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            direction: rtl;
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
-            position: relative;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* ========================================
-               APP WRAPPER
-            ======================================== */
-        .app-wrapper {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            width: 100vw;
-            background: var(--bg-primary);
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* ========================================
-               HEADER
-            ======================================== */
-        .app-header {
-            height: var(--header-height);
-            padding: 0 16px;
-            background: var(--bg-primary);
+        /* شريط التيكر */
+        .ticker-tape {
+            background: #12161a;
             border-bottom: 1px solid var(--border-color);
+            height: 40px;
+            overflow: hidden;
+        }
+        /* الهيدر مع شعار الثور والدب واسم البوت */
+        .header-wrapper {
+            padding: 12px 16px 8px 16px;
+            background: linear-gradient(180deg, #1a1d24 0%, #0b0e11 100%);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .brand {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-shrink: 0;
-            z-index: 10;
+            flex-wrap: wrap;
+            gap: 8px;
         }
-        .app-header .logo {
+        .brand-title {
             display: flex;
             align-items: center;
             gap: 8px;
+            font-size: 20px;
             font-weight: 700;
-            font-size: 18px;
+        }
+        .bot-name {
+            background: rgba(240, 185, 11, 0.12);
+            border: 1px solid var(--gold);
+            border-radius: 40px;
+            padding: 4px 16px;
+            font-size: 14px;
+            font-weight: 600;
             color: var(--gold);
+            letter-spacing: 0.3px;
+            box-shadow: 0 0 12px rgba(240, 185, 11, 0.15);
         }
-        .app-header .logo span {
-            font-size: 22px;
-        }
-        .app-header .pair-selector {
+        .bull-bear {
             display: flex;
             align-items: center;
-            gap: 6px;
-            background: var(--bg-secondary);
-            padding: 4px 14px 4px 10px;
+            gap: 10px;
+            background: rgba(255,255,255,0.03);
+            padding: 4px 12px 4px 16px;
             border-radius: 40px;
-            font-size: 13px;
-            font-weight: 600;
             border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: var(--transition);
         }
-        .app-header .pair-selector:hover {
-            border-color: var(--gold);
-        }
-        .app-header .pair-selector .arrow {
-            font-size: 10px;
-            color: var(--text-secondary);
-        }
-        .app-header .pair-selector small {
-            color: var(--text-secondary);
-            font-weight: 400;
-            margin-right: 4px;
-        }
-
-        /* ========================================
-               CHART AREA
-            ======================================== */
-        .chart-area {
-            flex: 1;
-            width: 100%;
-            background: var(--bg-primary);
-            position: relative;
-            min-height: 0;
-            overflow: hidden;
-        }
-        .chart-area .tradingview-widget-container {
-            height: 100% !important;
-            width: 100% !important;
-        }
-        .chart-area .tradingview-widget-container__widget {
-            height: 100% !important;
-            width: 100% !important;
-        }
-
-        /* ========================================
-               QUICK STATS OVERLAY
-            ======================================== */
-        .quick-stats {
-            position: absolute;
-            top: 12px;
-            left: 14px;
-            right: 14px;
-            display: flex;
-            justify-content: space-between;
-            background: rgba(11, 14, 17, 0.75);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 8px 18px;
-            border-radius: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            z-index: 15;
-            pointer-events: none;
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-        .quick-stats .stat-item {
+        .bull {
             display: flex;
             align-items: center;
             gap: 4px;
-        }
-        .quick-stats .stat-item .label {
-            font-size: 10px;
-            color: var(--text-muted);
-        }
-        .quick-stats .stat-item .val {
-            color: var(--text-primary);
+            color: var(--up-color);
             font-weight: 600;
-            font-size: 13px;
+            font-size: 14px;
         }
-        .quick-stats .stat-item .change.up {
-            color: var(--green);
+        .bear {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--down-color);
+            font-weight: 600;
+            font-size: 14px;
         }
-        .quick-stats .stat-item .change.down {
-            color: var(--red);
+        .bull svg, .bear svg {
+            width: 18px;
+            height: 18px;
         }
+        .arrow-up { color: var(--up-color); }
+        .arrow-down { color: var(--down-color); }
 
-        /* ========================================
-               BOTTOM NAVIGATION
-            ======================================== */
-        .bottom-nav {
-            height: var(--nav-height);
-            background: var(--bg-nav);
-            border-top: 1px solid var(--border-color);
+        /* التبويبات */
+        .navigation-tabs {
             display: flex;
-            justify-content: space-around;
-            align-items: center;
-            flex-shrink: 0;
-            padding: 4px 0 12px 0;
-            z-index: 20;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            gap: 8px;
+            margin-top: 14px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            flex-wrap: wrap;
         }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1px;
+        .tab-btn {
             background: transparent;
             border: none;
             color: var(--text-secondary);
-            font-size: 10px;
+            font-size: 14px;
             font-weight: 500;
+            padding: 6px 14px;
             cursor: pointer;
-            transition: var(--transition);
-            padding: 4px 8px;
-            border-radius: 12px;
-            min-width: 56px;
-            position: relative;
-            -webkit-tap-highlight-color: transparent;
+            border-radius: 6px;
+            transition: all 0.2s;
         }
-        .nav-item .icon {
-            font-size: 24px;
-            line-height: 1.2;
-            transition: var(--transition);
-        }
-        .nav-item .label {
-            font-size: 9px;
-            letter-spacing: 0.3px;
-        }
-        .nav-item.active {
+        .tab-btn.active {
             color: var(--gold);
+            background: rgba(240, 185, 11, 0.08);
         }
-        .nav-item.active .icon {
-            transform: scale(1.05);
-            filter: drop-shadow(0 0 8px rgba(240, 185, 11, 0.2));
-        }
-        .nav-item .badge-dot {
-            position: absolute;
-            top: 2px;
-            right: 10px;
-            width: 8px;
-            height: 8px;
-            background: var(--red);
-            border-radius: 50%;
-            border: 1.5px solid var(--bg-nav);
-        }
-        .nav-item:active {
-            transform: scale(0.92);
-        }
-
-        /* ========================================
-               RESPONSIVE BREAKPOINTS
-            ======================================== */
-        @media (max-width: 480px) {
-            :root {
-                --nav-height: 62px;
-                --header-height: 48px;
-            }
-            .app-header .logo {
-                font-size: 16px;
-            }
-            .app-header .pair-selector {
-                font-size: 12px;
-                padding: 3px 10px 3px 8px;
-            }
-            .nav-item {
-                min-width: 48px;
-            }
-            .nav-item .icon {
-                font-size: 22px;
-            }
-            .nav-item .label {
-                font-size: 8px;
-            }
-            .quick-stats {
-                font-size: 10px;
-                padding: 5px 12px;
-                top: 8px;
-                left: 10px;
-                right: 10px;
-            }
-            .quick-stats .stat-item .val {
-                font-size: 11px;
-            }
-            .quick-stats .stat-item .label {
-                font-size: 8px;
-            }
-        }
-        @media (max-width: 380px) {
-            .nav-item {
-                min-width: 40px;
-            }
-            .nav-item .icon {
-                font-size: 20px;
-            }
-            .nav-item .label {
-                font-size: 7px;
-            }
-        }
-        @media (min-width: 768px) {
-            .quick-stats {
-                top: 16px;
-                left: 20px;
-                right: 20px;
-                padding: 10px 24px;
-                font-size: 14px;
-            }
-            .quick-stats .stat-item .val {
-                font-size: 15px;
-            }
-        }
-
-        /* إخفاء شريط التمرير */
-        ::-webkit-scrollbar {
+        .content-section {
+            padding: 12px 14px 20px;
             display: none;
         }
-        * {
-            scrollbar-width: none;
+        .content-section.active {
+            display: block;
+        }
+        /* بطاقات السوق */
+        .market-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .market-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 14px 16px;
+        }
+        .market-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .market-card-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .market-card-header .badge {
+            font-size: 11px;
+            padding: 3px 12px;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-secondary);
+        }
+        .widget-container {
+            width: 100%;
+            height: 320px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .widget-container.tall {
+            height: 400px;
+        }
+        .widget-container.medium {
+            height: 280px;
         }
 
-        /* ========================================
-               UTILITY CLASSES
-            ======================================== */
-        .glass-effect {
-            background: rgba(11, 14, 17, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.04);
+        /* قائمة الأخبار */
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .news-item {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 12px 16px;
+            border-right: 3px solid var(--gold);
+            transition: 0.15s;
+        }
+        .news-item:hover {
+            border-color: var(--up-color);
+        }
+        .news-item .title {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .news-item .meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            display: flex;
+            gap: 12px;
+        }
+
+        /* قائمة الإدراج القريب */
+        .listing-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .listing-item {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+        }
+        .listing-item .coin {
+            font-weight: 600;
+        }
+        .listing-item .date {
+            color: var(--text-secondary);
+            font-size: 13px;
+            background: rgba(255,255,255,0.04);
+            padding: 2px 12px;
+            border-radius: 30px;
+        }
+
+        /* تذييل */
+        .footer-note {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 18px 0 10px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 16px;
+        }
+        @media (max-width: 480px) {
+            .brand-title { font-size: 17px; }
+            .bull-bear { padding: 2px 8px 2px 12px; }
+            .bull, .bear { font-size: 12px; }
+            .bot-name { font-size: 12px; padding: 2px 12px; }
         }
     </style>
 </head>
 <body>
-    <div class="app-wrapper">
 
-        <!-- ===== HEADER ===== -->
-        <header class="app-header">
-            <div class="logo">
-                <span>📊</span> سوق اليوناني
-            </div>
-            <div class="pair-selector" onclick="alert('تغيير الزوج: اختر من القائمة')">
-                BTC/USDT <small>•</small> <span class="arrow">▾</span>
-            </div>
-        </header>
+<!-- شريط التيكر -->
+<div class="ticker-tape">
+    <div class="tradingview-widget-container" style="width:100%;height:100%;">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+        {
+          "symbols": [
+            { "proName": "BINANCE:BTCUSDT", "title": "BTC/USDT" },
+            { "proName": "BINANCE:ETHUSDT", "title": "ETH/USDT" },
+            { "proName": "BINANCE:SOLUSDT", "title": "SOL/USDT" },
+            { "proName": "BINANCE:TONUSDT", "title": "TON/USDT" }
+          ],
+          "showSymbolLogo": true,
+          "colorTheme": "dark",
+          "isTransparent": true,
+          "displayMode": "adaptive",
+          "locale": "ar"
+        }
+        </script>
+    </div>
+</div>
 
-        <!-- ===== CHART AREA ===== -->
-        <div class="chart-area" id="chartContainer">
-            <!-- مؤشرات سريعة فوق الشارت -->
-            <div class="quick-stats" id="quickStats">
-                <div class="stat-item">
-                    <span class="label">السعر</span>
-                    <span class="val" id="priceVal">67,432</span>
-                </div>
-                <div class="stat-item">
-                    <span class="label">التغيير (24h)</span>
-                    <span class="change up" id="changeVal">+2.41%</span>
-                </div>
-                <div class="stat-item">
-                    <span class="label">الحجم</span>
-                    <span class="val" id="volumeVal">24.5B</span>
-                </div>
-                <div class="stat-item" style="display:none;">
-                    <span class="label">عالي/منخفض</span>
-                    <span class="val" id="highLowVal">68.2k / 65.8k</span>
-                </div>
-            </div>
+<!-- الهيدر مع شعار الثور والدب واسم البوت -->
+<div class="header-wrapper">
+    <div class="brand">
+        <div class="brand-title">
+            <span>📊</span> سوق العرب
+            <span class="bot-name">🤖 @CryptoNews15bot</span>
+        </div>
+        <div class="bull-bear">
+            <span class="bull">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                <span>ثور</span>
+                <span class="arrow-up">▲</span>
+            </span>
+            <span class="bear">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>
+                <span>دب</span>
+                <span class="arrow-down">▼</span>
+            </span>
+        </div>
+    </div>
+    <!-- تبويبات التنقل -->
+    <div class="navigation-tabs">
+        <button class="tab-btn active" onclick="switchTab('crypto', this)">🪙 عملات رقمية</button>
+        <button class="tab-btn" onclick="switchTab('commodities', this)">🛢️ ذهب & نفط</button>
+        <button class="tab-btn" onclick="switchTab('news', this)">📰 أخبار</button>
+        <button class="tab-btn" onclick="switchTab('listings', this)">📅 إدراجات قادمة</button>
+    </div>
+</div>
 
-            <!-- شارت TradingView المتقدم -->
-            <div class="tradingview-widget-container" style="height:100%;width:100%;">
-                <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
-                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+<!-- ========== قسم العملات الرقمية ========== -->
+<div id="crypto" class="content-section active">
+    <div class="market-grid">
+        <div class="market-card">
+            <div class="market-card-header">
+                <h3>⚡ أبرز العملات الرقمية</h3>
+                <span class="badge">مباشر</span>
+            </div>
+            <div class="widget-container">
+                <div class="tradingview-widget-container" style="height:100%;width:100%;">
+                    <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
                     {
-                        "autosize": true,
-                        "symbol": "BINANCE:BTCUSDT",
-                        "interval": "60",
-                        "timezone": "Etc/UTC",
-                        "theme": "dark",
-                        "style": "1",
-                        "locale": "ar",
-                        "enable_publishing": false,
-                        "hide_side_toolbar": false,
-                        "allow_symbol_change": true,
-                        "studies": [
-                            "MASimple@tv-basicstudies",
-                            "RSI@tv-basicstudies",
-                            "MACD@tv-basicstudies",
-                            "Volume@tv-basicstudies"
-                        ],
-                        "show_popup_button": true,
-                        "popup_width": "1000",
-                        "popup_height": "650",
-                        "hide_top_toolbar": false,
-                        "hide_legend": false,
-                        "save_image": false,
-                        "container_id": "chartContainer"
+                      "width": "100%",
+                      "height": "100%",
+                      "defaultColumn": "overview",
+                      "screener_type": "crypto_mkt",
+                      "displayCurrency": "USD",
+                      "colorTheme": "dark",
+                      "locale": "ar",
+                      "isTransparent": true
                     }
-                </script>
+                    </script>
+                </div>
             </div>
         </div>
-
-        <!-- ===== BOTTOM NAVIGATION ===== -->
-        <nav class="bottom-nav">
-            <button class="nav-item" onclick="setActive(this)" aria-label="القائمة">
-                <span class="icon">📋</span>
-                <span class="label">القائمة</span>
-            </button>
-            <button class="nav-item" onclick="setActive(this)" aria-label="المجتمع">
-                <span class="icon">👥</span>
-                <span class="label">مجتمع</span>
-            </button>
-            <button class="nav-item active" onclick="setActive(this)" aria-label="اكتشف">
-                <span class="icon">🔍</span>
-                <span class="label">اكتشف</span>
-                <span class="badge-dot"></span>
-            </button>
-            <button class="nav-item" onclick="setActive(this)" aria-label="الرسوم البيانية">
-                <span class="icon">📈</span>
-                <span class="label">رسوم بيانية</span>
-            </button>
-            <button class="nav-item" onclick="setActive(this)" aria-label="قائمة المراقبة">
-                <span class="icon">⭐</span>
-                <span class="label">قائمة المراقبة</span>
-            </button>
-        </nav>
+        <!-- شارت BTC مع شموع يابانية ومؤشرات -->
+        <div class="market-card">
+            <div class="market-card-header">
+                <h3>📈 شارت BTC/USDT (شموع يابانية)</h3>
+                <span class="badge">تحليل فني متقدم</span>
+            </div>
+            <div class="widget-container tall">
+                <div class="tradingview-widget-container" style="height:100%;width:100%;">
+                    <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+                    {
+                      "autosize": true,
+                      "symbol": "BINANCE:BTCUSDT",
+                      "interval": "60",
+                      "timezone": "Etc/UTC",
+                      "theme": "dark",
+                      "style": "1",
+                      "locale": "ar",
+                      "enable_publishing": false,
+                      "hide_side_toolbar": false,
+                      "allow_symbol_change": true,
+                      "studies": [
+                        "MASimple@tv-basicstudies",
+                        "RSI@tv-basicstudies",
+                        "MACD@tv-basicstudies"
+                      ],
+                      "show_popup_button": true,
+                      "popup_width": "1000",
+                      "popup_height": "650"
+                    }
+                    </script>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
-    <script>
-        // ============================================
-        // 1. تفعيل العنصر النشط في شريط التنقل
-        // ============================================
-        function setActive(el) {
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            el.classList.add('active');
+<!-- ========== قسم الذهب والنفط ========== -->
+<div id="commodities" class="content-section">
+    <div class="market-grid">
+        <div class="market-card">
+            <div class="market-card-header">
+                <h3>🟡 الذهب والمعادن</h3>
+                <span class="badge">أسعار فورية</span>
+            </div>
+            <div class="widget-container">
+                <div class="tradingview-widget-container" style="height:100%;width:100%;">
+                    <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
+                    {
+                      "width": "100%",
+                      "height": "100%",
+                      "defaultColumn": "overview",
+                      "screener_type": "commodities",
+                      "displayCurrency": "USD",
+                      "colorTheme": "dark",
+                      "locale": "ar",
+                      "isTransparent": true
+                    }
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="market-card">
+            <div class="market-card-header">
+                <h3>🛢️ النفط والطاقة</h3>
+                <span class="badge">مباشر</span>
+            </div>
+            <div class="widget-container medium">
+                <div class="tradingview-widget-container" style="height:100%;width:100%;">
+                    <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
+                    {
+                      "width": "100%",
+                      "height": "100%",
+                      "defaultColumn": "overview",
+                      "screener_type": "commodities",
+                      "displayCurrency": "USD",
+                      "colorTheme": "dark",
+                      "locale": "ar",
+                      "isTransparent": true,
+                      "filter": { "exchange": "NYMEX" }
+                    }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== قسم الأخبار ========== -->
+<div id="news" class="content-section">
+    <div class="market-card" style="border: none; background: transparent; padding: 0;">
+        <div class="market-card-header">
+            <h3>📰 آخر أخبار السوق</h3>
+            <span class="badge">تحديث لحظي</span>
+        </div>
+        <div class="news-list">
+            <div class="news-item">
+                <div class="title">🚀 البيتكوين يقترب من 70,000$ وسط توقعات إيجابية</div>
+                <div class="meta"><span>🕒 منذ ساعة</span><span>📊 تأثير: عالي</span></div>
+            </div>
+            <div class="news-item">
+                <div class="title">🏦 الاحتياطي الفيدرالي يلمح إلى تثبيت الفائدة</div>
+                <div class="meta"><span>🕒 منذ 3 ساعات</span><span>📊 تأثير: متوسط</span></div>
+            </div>
+            <div class="news-item">
+                <div class="title">⚡ إيثريوم يشهد ارتفاعاً في الرسوم مع ازدياد النشاط</div>
+                <div class="meta"><span>🕒 منذ 5 ساعات</span><span>📊 تأثير: منخفض</span></div>
+            </div>
+            <div class="news-item">
+                <div class="title">🇺🇸 تصريحات جديدة حول تنظيم العملات الرقمية في الولايات المتحدة</div>
+                <div class="meta"><span>🕒 منذ 8 ساعات</span><span>📊 تأثير: عالي</span></div>
+            </div>
+            <div class="news-item">
+                <div class="title">📉 الذهب يتراجع مع ارتفاع الدولار وسط التوترات الجيوسياسية</div>
+                <div class="meta"><span>🕒 منذ 12 ساعة</span><span>📊 تأثير: متوسط</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== قسم الإدراجات القادمة ========== -->
+<div id="listings" class="content-section">
+    <div class="market-card" style="border: none; background: transparent; padding: 0;">
+        <div class="market-card-header">
+            <h3>📅 الإدراجات القريبة (قادم)</h3>
+            <span class="badge">أسبوعي</span>
+        </div>
+        <div class="listing-grid">
+            <div class="listing-item">
+                <span class="coin">🟣 ZKsync (ZK)</span>
+                <span class="date">📆 15 يوليو 2026</span>
+            </div>
+            <div class="listing-item">
+                <span class="coin">🔵 LayerZero (ZRO)</span>
+                <span class="date">📆 18 يوليو 2026</span>
+            </div>
+            <div class="listing-item">
+                <span class="coin">🟠 io.net (IO)</span>
+                <span class="date">📆 22 يوليو 2026</span>
+            </div>
+            <div class="listing-item">
+                <span class="coin">🟢 Aethir (ATH)</span>
+                <span class="date">📆 26 يوليو 2026</span>
+            </div>
+            <div class="listing-item">
+                <span class="coin">🔴 AltLayer (ALT)</span>
+                <span class="date">📆 30 يوليو 2026</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- تذييل -->
+<div class="footer-note">
+    ⚡ جميع البيانات والمؤشرات مقدمة من TradingView • تحديث مباشر • تابعنا @CryptoNews15bot
+</div>
+
+<script>
+    // التبديل بين التبويبات
+    function switchTab(tabId, btnElement) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        if (btnElement) {
+            btnElement.classList.add('active');
+        } else {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                if (btn.textContent.includes(tabId)) btn.classList.add('active');
+            });
         }
+    }
 
-        // ============================================
-        // 2. محاكاة تحديث البيانات الحية (WebSocket Ready)
-        // ============================================
-        class MarketDataSimulator {
-            constructor() {
-                this.price = 67432;
-                this.change = 2.41;
-                this.volume = 24.5;
-                this.isUp = true;
-                this.interval = null;
-            }
+    window.addEventListener('load', function() {
+        console.log('✅ منصة سوق العرب جاهزة مع شموع يابانية ومؤشرات');
+    });
+</script>
 
-            start() {
-                this.interval = setInterval(() => {
-                    // تغيير عشوائي ±0.5%
-                    const delta = (Math.random() - 0.5) * 0.6;
-                    this.price += this.price * (delta / 100);
-                    this.price = Math.round(this.price * 100) / 100;
-
-                    // تحديث التغيير
-                    this.change += (Math.random() - 0.5) * 0.08;
-                    this.change = Math.round(this.change * 100) / 100;
-                    this.isUp = this.change >= 0;
-
-                    // تحديث الحجم
-                    this.volume += (Math.random() - 0.5) * 0.2;
-                    this.volume = Math.max(10, Math.round(this.volume * 10) / 10);
-
-                    // تحديث واجهة المستخدم
-                    this.updateUI();
-                }, 3000);
-            }
-
-            updateUI() {
-                const priceEl = document.getElementById('priceVal');
-                const changeEl = document.getElementById('changeVal');
-                const volumeEl = document.getElementById('volumeVal');
-
-                if (priceEl) {
-                    priceEl.textContent = this.price.toLocaleString('en-US', {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0
-                    });
-                }
-
-                if (changeEl) {
-                    const sign = this.isUp ? '+' : '';
-                    changeEl.textContent = `${sign}${this.change}%`;
-                    changeEl.className = `change ${this.isUp ? 'up' : 'down'}`;
-                }
-
-                if (volumeEl) {
-                    volumeEl.textContent = `${this.volume}B`;
-                }
-            }
-
-            stop() {
-                if (this.interval) {
-                    clearInterval(this.interval);
-                    this.interval = null;
-                }
-            }
-        }
-
-        // ============================================
-        // 3. تهيئة المحاكاة
-        // ============================================
-        const marketSim = new MarketDataSimulator();
-
-        // بدء المحاكاة بعد تحميل الصفحة
-        window.addEventListener('load', function() {
-            console.log('✅ Souq Al-Yunani منصة التداول المتقدمة جاهزة');
-            console.log('📊 شارت TradingView مع شموع يابانية ومؤشرات');
-            console.log('📱 واجهة RTL متجاوبة مع شريط تنقل سفلي');
-
-            // بدء تحديث البيانات الحية
-            marketSim.start();
-
-            // إعادة ضبط الـ container للتأكد من أن الشارت يملأ المساحة
-            setTimeout(() => {
-                const container = document.querySelector('.chart-area .tradingview-widget-container');
-                if (container) {
-                    container.style.height = '100%';
-                    container.style.width = '100%';
-                }
-            }, 200);
-        });
-
-        // تنظيف عند مغادرة الصفحة
-        window.addEventListener('beforeunload', function() {
-            marketSim.stop();
-        });
-
-        // ============================================
-        // 4. دعم تغيير الزوج (ميزة مستقبلية)
-        // ============================================
-        function changeSymbol(newSymbol) {
-            // يمكن توسيعها لتغيير الشارت ديناميكياً
-            console.log(`🔄 تغيير الزوج إلى: ${newSymbol}`);
-            // في الإصدار القادم: إعادة تحميل الشارت بالزوج الجديد
-        }
-
-        // ============================================
-        // 5. معالجة الأخطاء وإعادة المحاولة
-        // ============================================
-        console.log('💡 نصائح احترافية:');
-        console.log('   • استخدم تغيير الزوج لتتبع عملات مختلفة');
-        console.log('   • المؤشرات المضافة: MA, RSI, MACD, Volume');
-        console.log('   • البيانات الحية محاكاة، يمكن استبدالها بـ WebSocket حقيقي');
-    </script>
 </body>
 </html>
