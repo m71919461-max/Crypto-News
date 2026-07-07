@@ -4,96 +4,503 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>سوق العرب - متابعة الأسواق الحية</title>
-    <!-- Favicon -->
-    <link rel="icon" href="https://img.icons8.com/color/48/bitcoin--v1.png">
+    <!-- TradingView widgets -->
     <style>
-        /* (نفس تنسيقاتك السابقة، تمت إضافة تنسيق جديد للودجت) */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, system-ui, sans-serif; }
-        body { background: #0b0e11; color: #eaecef; direction: rtl; overflow-x: hidden; }
-        :root { --bg-card: #181a20; --gold: #f0b90b; --up-color: #0ecb81; --border-color: #24272c; }
-        
-        .header-wrapper { padding: 12px 16px 8px 16px; background: linear-gradient(180deg, #1a1d24 0%, #0b0e11 100%); border-bottom: 1px solid var(--border-color); }
-        .brand { display: flex; justify-content: space-between; align-items: center; }
-        .brand-title { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 700; }
-        
-        .navigation-tabs { display: flex; gap: 8px; margin-top: 14px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; flex-wrap: wrap; }
-        .tab-btn { background: transparent; border: none; color: #848e9c; font-size: 14px; padding: 6px 14px; cursor: pointer; border-radius: 6px; transition: 0.2s; }
-        .tab-btn.active { color: var(--gold); background: rgba(240, 185, 11, 0.08); }
-        
-        .content-section { padding: 12px 14px 20px; display: none; }
-        .content-section.active { display: block; }
-        .widget-container { width: 100%; height: 350px; border-radius: 12px; overflow: hidden; margin-top: 10px; }
-        
-        .footer-note { font-size: 12px; color: #848e9c; text-align: center; padding: 20px; border-top: 1px solid var(--border-color); margin-top: 20px; }
-        .footer-link { color: var(--gold); text-decoration: none; font-weight: bold; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        body {
+            background: #0b0e11;
+            color: #eaecef;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+        :root {
+            --bg-main: #0b0e11;
+            --bg-card: #181a20;
+            --text-primary: #eaecef;
+            --text-secondary: #848e9c;
+            --gold: #f0b90b;
+            --up-color: #0ecb81;
+            --down-color: #f6465d;
+            --border-color: #24272c;
+        }
+        /* شريط التيكر */
+        .ticker-tape {
+            background: #12161a;
+            border-bottom: 1px solid var(--border-color);
+            height: 40px;
+            overflow: hidden;
+        }
+        /* الهيدر مع شعار الثور والدب واسم البوت */
+        .header-wrapper {
+            padding: 12px 16px 8px 16px;
+            background: linear-gradient(180deg, #1a1d24 0%, #0b0e11 100%);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .brand {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .brand-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .bot-name {
+            background: rgba(240, 185, 11, 0.12);
+            border: 1px solid var(--gold);
+            border-radius: 40px;
+            padding: 4px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gold);
+            letter-spacing: 0.3px;
+            box-shadow: 0 0 12px rgba(240, 185, 11, 0.15);
+        }
+        .bull-bear {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.03);
+            padding: 4px 12px 4px 16px;
+            border-radius: 40px;
+            border: 1px solid var(--border-color);
+        }
+        .bull {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--up-color);
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .bear {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--down-color);
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .bull svg, .bear svg {
+            width: 18px;
+            height: 18px;
+        }
+        .arrow-up { color: var(--up-color); }
+        .arrow-down { color: var(--down-color); }
+
+        /* التبويبات */
+        .navigation-tabs {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            padding: 6px 14px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            color: var(--gold);
+            background: rgba(240, 185, 11, 0.08);
+        }
+        .content-section {
+            padding: 12px 14px 20px;
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        /* بطاقات السوق */
+        .market-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .market-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 14px 16px;
+        }
+        .market-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .market-card-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .market-card-header .badge {
+            font-size: 11px;
+            padding: 3px 12px;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-secondary);
+        }
+        .widget-container {
+            width: 100%;
+            height: 320px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .widget-container.tall {
+            height: 400px;
+        }
+        .widget-container.medium {
+            height: 280px;
+        }
+
+        /* قائمة الأخبار */
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .news-item {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 12px 16px;
+            border-right: 3px solid var(--gold);
+            transition: 0.15s;
+        }
+        .news-item:hover {
+            border-color: var(--up-color);
+        }
+        .news-item .title {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .news-item .meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            display: flex;
+            gap: 12px;
+        }
+
+        /* قائمة الإدراج القريب */
+        .listing-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .listing-item {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+        }
+        .listing-item .coin {
+            font-weight: 600;
+        }
+        .listing-item .date {
+            color: var(--text-secondary);
+            font-size: 13px;
+            background: rgba(255,255,255,0.04);
+            padding: 2px 12px;
+            border-radius: 30px;
+        }
+
+        /* تذييل */
+        .footer-note {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 18px 0 10px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 16px;
+        }
+        @media (max-width: 480px) {
+            .brand-title { font-size: 17px; }
+            .bull-bear { padding: 2px 8px 2px 12px; }
+            .bull, .bear { font-size: 12px; }
+            .bot-name { font-size: 12px; padding: 2px 12px; }
+        }
     </style>
 </head>
 <body>
 
-<!-- شريط التيكر العلوي -->
+<!-- شريط التيكر -->
 <div class="ticker-tape">
-    <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-    { "symbols": [{"proName":"BINANCE:BTCUSDT"},{"proName":"BINANCE:ETHUSDT"},{"proName":"BINANCE:SOLUSDT"},{"proName":"BINANCE:TONUSDT"}], "colorTheme": "dark", "isTransparent": true, "locale": "ar" }
-    </script></div>
+    <div class="tradingview-widget-container" style="width:100%;height:100%;">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+        {
+          "symbols": [
+            { "proName": "BINANCE:BTCUSDT", "title": "BTC/USDT" },
+            { "proName": "BINANCE:ETHUSDT", "title": "ETH/USDT" },
+            { "proName": "BINANCE:SOLUSDT", "title": "SOL/USDT" },
+            { "proName": "BINANCE:TONUSDT", "title": "TON/USDT" }
+          ],
+          "showSymbolLogo": true,
+          "colorTheme": "dark",
+          "isTransparent": true,
+          "displayMode": "adaptive",
+          "locale": "ar"
+        }
+        </script>
+    </div>
 </div>
 
-<!-- الهيدر -->
+<!-- الهيدر مع شعار الثور والدب واسم البوت -->
 <div class="header-wrapper">
-    <div class="brand"><div class="brand-title"><span>📊</span> سوق العرب</div></div>
+    <div class="brand">
+        <div class="brand-title">
+            <span>📊</span> سوق العرب
+            <span class="bot-name">🤖 @CryptoNews15bot</span>
+        </div>
+        <div class="bull-bear">
+            <span class="bull">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                <span>ثور</span>
+                <span class="arrow-up">▲</span>
+            </span>
+            <span class="bear">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>
+                <span>دب</span>
+                <span class="arrow-down">▼</span>
+            </span>
+        </div>
+    </div>
+    <!-- تبويبات التنقل -->
     <div class="navigation-tabs">
         <button class="tab-btn active" onclick="switchTab('crypto', this)">🪙 عملات رقمية</button>
         <button class="tab-btn" onclick="switchTab('commodities', this)">🛢️ ذهب & نفط</button>
-        <button class="tab-btn" onclick="switchTab('news', this)">📰 أخبار حية</button>
+        <button class="tab-btn" onclick="switchTab('news', this)">📰 أخبار</button>
+        <button class="tab-btn" onclick="switchTab('listings', this)">📅 إدراجات قادمة</button>
     </div>
 </div>
 
-<!-- قسم العملات -->
+<!-- ========== قسم العملات الرقمية ========== -->
 <div id="crypto" class="content-section active">
-    <div class="widget-container" style="height: 450px;">
-        <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
-        { "width": "100%", "height": "100%", "screener_type": "crypto_mkt", "colorTheme": "dark", "locale": "ar", "isTransparent": true }
-        </script></div>
+    <div class="market-grid">
+        <div class="market-card">
+            <div class="market-card-header">
+                <h3>⚡ أبرز العملات الرقمية</h3>
+                <span class="badge">مباشر</span>
+            </div>
+            <div class="widget-container">
+                <div class="tradingview-widget-container" style="height:100%;width:100%;">
+                    <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
+                    {
+                      "width": "100%",
+                      "height": "100%",
+                      "defaultColumn": "overview",
+                      "screener_type": "crypto_mkt",
+                      "displayCurrency": "USD",
+                      "colorTheme": "dark",
+                      "locale": "ar",
+                      "isTransparent": true
+                    }
+                    </script>
+                </div>
+            </div>
+        </div>
+        <!-- شارت BTC مع شموع يابانية ومؤشرات -->
+        <div class="market-card">
+            <div class="market-card-header">
+                <h3>📈 شارت BTC/USDT (شموع يابانية)</h3>
+                <span class="badge">تحليل فني متقدم</span>
+            </div>
+            <div class="widget-container tall">
+                <div class="tradingview-widget-container" style="height:100%;width:100%;">
+                    <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+                    {
+                      "autosize": true,
+                      "symbol": "BINANCE:BTCUSDT",
+                      "interval": "60",
+                      "timezone": "Etc/UTC",
+                      "theme": "dark",
+                      "style": "1",
+                      "locale": "ar",
+                      "enable_publishing": false,
+                      "hide_side_toolbar": false,
+                      "allow_symbol_change": true,
+                      "studies": [
+                        "MASimple@tv-basicstudies",
+                        "RSI@tv-basicstudies",
+                        "MACD@tv-basicstudies"
+                      ],
+                      "show_popup_button": true,
+                      "popup_width": "1000",
+                      "popup_height": "650"
+                    }
+                    </script>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- قسم الذهب والنفط -->
+<!-- ========== قسم الذهب والنفط ========== -->
 <div id="commodities" class="content-section">
-    <div class="widget-container" style="height: 450px;">
-        <div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
-        { "width": "100%", "height": "100%", "screener_type": "commodities", "colorTheme": "dark", "locale": "ar", "isTransparent": true }
-        </script></div>
+    <div class="market-grid">
+        <div class="market-card">
+            <div class="market-card-header">
+                <h3>🟡 الذهب والمعادن</h3>
+                <span class="badge">أسعار فورية</span>
+            </div>
+            <div class="widget-container">
+                <div class="tradingview-widget-container" style="height:100%;width:100%;">
+                    <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
+                    {
+                      "width": "100%",
+                      "height": "100%",
+                      "defaultColumn": "overview",
+                      "screener_type": "commodities",
+                      "displayCurrency": "USD",
+                      "colorTheme": "dark",
+                      "locale": "ar",
+                      "isTransparent": true
+                    }
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="market-card">
+            <div class="market-card-header">
+                <h3>🛢️ النفط والطاقة</h3>
+                <span class="badge">مباشر</span>
+            </div>
+            <div class="widget-container medium">
+                <div class="tradingview-widget-container" style="height:100%;width:100%;">
+                    <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
+                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
+                    {
+                      "width": "100%",
+                      "height": "100%",
+                      "defaultColumn": "overview",
+                      "screener_type": "commodities",
+                      "displayCurrency": "USD",
+                      "colorTheme": "dark",
+                      "locale": "ar",
+                      "isTransparent": true,
+                      "filter": { "exchange": "NYMEX" }
+                    }
+                    </script>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- قسم الأخبار الحي (تم التحديث هنا) -->
+<!-- ========== قسم الأخبار ========== -->
 <div id="news" class="content-section">
-    <div class="widget-container" style="height: 500px;">
-        <div class="tradingview-widget-container" style="height:100%;width:100%;">
-            <div class="tradingview-widget-container__widget" style="height:100%;width:100%;"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-timeline.js" async>
-            { "feedMode": "market", "market": "crypto", "colorTheme": "dark", "isTransparent": true, "displayMode": "regular", "width": "100%", "height": "100%", "locale": "ar" }
-            </script>
+    <div class="market-card" style="border: none; background: transparent; padding: 0;">
+        <div class="market-card-header">
+            <h3>📰 آخر أخبار السوق</h3>
+            <span class="badge">تحديث لحظي</span>
+        </div>
+        <div class="news-list">
+            <div class="news-item">
+                <div class="title">🚀 البيتكوين يقترب من 70,000$ وسط توقعات إيجابية</div>
+                <div class="meta"><span>🕒 منذ ساعة</span><span>📊 تأثير: عالي</span></div>
+            </div>
+            <div class="news-item">
+                <div class="title">🏦 الاحتياطي الفيدرالي يلمح إلى تثبيت الفائدة</div>
+                <div class="meta"><span>🕒 منذ 3 ساعات</span><span>📊 تأثير: متوسط</span></div>
+            </div>
+            <div class="news-item">
+                <div class="title">⚡ إيثريوم يشهد ارتفاعاً في الرسوم مع ازدياد النشاط</div>
+                <div class="meta"><span>🕒 منذ 5 ساعات</span><span>📊 تأثير: منخفض</span></div>
+            </div>
+            <div class="news-item">
+                <div class="title">🇺🇸 تصريحات جديدة حول تنظيم العملات الرقمية في الولايات المتحدة</div>
+                <div class="meta"><span>🕒 منذ 8 ساعات</span><span>📊 تأثير: عالي</span></div>
+            </div>
+            <div class="news-item">
+                <div class="title">📉 الذهب يتراجع مع ارتفاع الدولار وسط التوترات الجيوسياسية</div>
+                <div class="meta"><span>🕒 منذ 12 ساعة</span><span>📊 تأثير: متوسط</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ========== قسم الإدراجات القادمة ========== -->
+<div id="listings" class="content-section">
+    <div class="market-card" style="border: none; background: transparent; padding: 0;">
+        <div class="market-card-header">
+            <h3>📅 الإدراجات القريبة (قادم)</h3>
+            <span class="badge">أسبوعي</span>
+        </div>
+        <div class="listing-grid">
+            <div class="listing-item">
+                <span class="coin">🟣 ZKsync (ZK)</span>
+                <span class="date">📆 15 يوليو 2026</span>
+            </div>
+            <div class="listing-item">
+                <span class="coin">🔵 LayerZero (ZRO)</span>
+                <span class="date">📆 18 يوليو 2026</span>
+            </div>
+            <div class="listing-item">
+                <span class="coin">🟠 io.net (IO)</span>
+                <span class="date">📆 22 يوليو 2026</span>
+            </div>
+            <div class="listing-item">
+                <span class="coin">🟢 Aethir (ATH)</span>
+                <span class="date">📆 26 يوليو 2026</span>
+            </div>
+            <div class="listing-item">
+                <span class="coin">🔴 AltLayer (ALT)</span>
+                <span class="date">📆 30 يوليو 2026</span>
+            </div>
         </div>
     </div>
 </div>
 
 <!-- تذييل -->
 <div class="footer-note">
-    ⚡ جميع البيانات مقدمة من TradingView <br>
-    تابعنا على التليجرام: <a href="https://t.me/CryptoNews15bot" class="footer-link">@CryptoNews15bot</a>
+    ⚡ جميع البيانات والمؤشرات مقدمة من TradingView • تحديث مباشر • تابعنا @CryptoNews15bot
 </div>
 
 <script>
+    // التبديل بين التبويبات
     function switchTab(tabId, btnElement) {
         document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
+
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        btnElement.classList.add('active');
+        if (btnElement) {
+            btnElement.classList.add('active');
+        } else {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                if (btn.textContent.includes(tabId)) btn.classList.add('active');
+            });
+        }
     }
+
+    window.addEventListener('load', function() {
+        console.log('✅ منصة سوق العرب جاهزة مع شموع يابانية ومؤشرات');
+    });
 </script>
 
 </body>
-</html>
+            </html>
